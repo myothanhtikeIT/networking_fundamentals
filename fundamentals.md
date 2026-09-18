@@ -305,38 +305,24 @@ Understand:
 And importantly:
 > A VLAN is not automatically a security boundary by itself.
 
-ACLs
+> ACLs - Access Control Lists. Rules that allow or deny traffic based on things such as IP addresses and protocols.
 
-Access Control Lists. Rules that allow or deny traffic based on things such as IP addresses and protocols.
+> Firewall Rules - Rules that control which network connections are permitted or blocked.
 
-Firewall Rules
+> Stateful vs Stateless Filtering
+> Stateful: Tracks connection state and can allow return traffic automatically.
+> Stateless: Evaluates packets individually without tracking the connection.
 
-Rules that control which network connections are permitted or blocked.
+> Port Security - A switch feature that limits which MAC addresses can use a port.
 
-Stateful vs Stateless Filtering
+> DHCP Snooping - A switch security feature that blocks unauthorized DHCP servers and builds a trusted DHCP-binding table.
 
-Stateful: Tracks connection state and can allow return traffic automatically.
-Stateless: Evaluates packets individually without tracking the connection.
+> Dynamic ARP Inspection - Checks ARP traffic against trusted DHCP information to help prevent ARP spoofing.
 
-Port Security
+> SSH vs Telnet - SSH: Encrypted remote administration.
+> Telnet: Unencrypted remote administration. SSH should normally be used.
 
-A switch feature that limits which MAC addresses can use a port.
-
-DHCP Snooping
-
-A switch security feature that blocks unauthorized DHCP servers and builds a trusted DHCP-binding table.
-
-Dynamic ARP Inspection
-
-Checks ARP traffic against trusted DHCP information to help prevent ARP spoofing.
-
-SSH vs Telnet
-
-SSH: Encrypted remote administration.
-Telnet: Unencrypted remote administration. SSH should normally be used.
-
-Authentication / Authorization / Accounting
-
+> Authentication / Authorization / Accounting
 >Authentication: Who are you?
 >Authorization: What are you allowed to do?
 >Accounting: What did you do?
@@ -356,6 +342,26 @@ Understand:
 - WPA2/WPA3
 - roaming
 - basic controller/cloud-managed AP concepts
+
+> SSID - The name of a Wi-Fi network that users see.
+
+> AP - Access Point. Provides wireless connectivity and bridges Wi-Fi clients to the wired network.
+
+> Channels - Specific radio frequencies used by Wi-Fi devices to communicate.
+
+> 2.4 / 5 / 6 GHz - Wi-Fi frequency bands.
+
+> 2.4 GHz: Longer range, more interference, fewer channels.
+> 5 GHz: Faster, more channels, shorter range.
+> 6 GHz: More spectrum and less congestion, supported only by newer Wi-Fi standards/devices.
+
+> Channel Interference - When overlapping or competing wireless transmissions reduce performance.
+
+> WPA2 / WPA3 - Wi-Fi security standards used to authenticate clients and protect wireless traffic. WPA3 is the newer standard.
+
+> Roaming - A wireless client moves from one AP to another while maintaining network connectivity.
+
+> Controller / Cloud-Managed AP - A system that centrally manages multiple APs, including configuration, monitoring, firmware, and wireless policies.
 ---
 ## Troubleshooting methodology
 Don't just memorize commands.
