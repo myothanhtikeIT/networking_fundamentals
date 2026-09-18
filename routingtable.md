@@ -1041,4 +1041,5 @@ The practical troubleshooting question is:
 
 > **"Does this device know where to send traffic to the destination?"**
 
-If it does not, you are likely dealing with a **routing problem**.
+If it does not, it's likely dealing with a **routing problem**.
+---
