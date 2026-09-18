@@ -162,9 +162,7 @@ TCP 22   SSH
 TCP 80   HTTP
 TCP 443  HTTPS
 UDP 53   DNS
-Socket
-
-An endpoint of network communication, typically represented by an IP address and port.
+> Socket - An endpoint of network communication, typically represented by an IP address and port.
 
 Example:
 
@@ -250,7 +248,6 @@ Understand:
 Know the famous:
 
 #### DORA
-
 - Discover
 - Offer
 - Request
@@ -406,3 +403,13 @@ nmap
 ## there's one final thing
 brain should be able to narrate the entire fucking journey:
 "Windows needs DNS first. DNS gets the destination IP. The workstation checks whether the destination is local. It isn't, so it sends the Ethernet frame to its default gateway. The switch forwards it through the correct VLAN. VyOS receives it, checks its routing table, performs NAT, forwards it toward the ISP, and the return traffic comes back through the NAT state back to the workstation."
+---
+
+
+
+
+
+
+
+
+
