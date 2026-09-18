@@ -168,3 +168,59 @@ Understand:
 - VPN concepts
 And importantly:
 > A VLAN is not automatically a security boundary by itself.
+---
+## Wireless
+Understand:
+
+- SSID
+- AP
+- channels
+- 2.4/5/6 GHz
+- channel interference
+- WPA2/WPA3
+- roaming
+- basic controller/cloud-managed AP concepts
+---
+## Troubleshooting methodology
+Don't just memorize commands.
+Learn to think:
+> Where exactly does communication break?
+```
+PC
+ ↓
+NIC?
+ ↓
+Ethernet?
+ ↓
+Switch?
+ ↓
+VLAN?
+ ↓
+Gateway?
+ ↓
+Routing?
+ ↓
+NAT?
+ ↓
+DNS?
+ ↓
+Internet?
+```
+Then use tools to prove each layer:
+
+```
+Linux           Windows
+ip addr         ipconfig                 
+ip route        route print
+ping            ping
+arp             tracert
+traceroute      nslookup
+nslookup        arp -a
+dig             netstat
+ss              Test-NetConnection
+tcpdump
+nmap
+```
+## there's one final thing
+brain should be able to narrate the entire fucking journey:
+"Windows needs DNS first. DNS gets the destination IP. The workstation checks whether the destination is local. It isn't, so it sends the Ethernet frame to its default gateway. The switch forwards it through the correct VLAN. VyOS receives it, checks its routing table, performs NAT, forwards it toward the ISP, and the return traffic comes back through the NAT state back to the workstation."
