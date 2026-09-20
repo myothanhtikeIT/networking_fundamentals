@@ -406,18 +406,19 @@ brain should be able to narrate the entire fucking journey:
 ---
 ## OSI model 
 ```
-L1 Physical
+L1 Physical 
     How do bits physically move?
+(Cables, fiber, radio, electrical/optical signals, connectors, NIC physical, copper, cable, fiber, SFP/SFP+)
 
-L2 Data Link
+L2 Data Link (VLAN, MAC, Ethernet, Trunking, Tagging like 802.1Q)
     How do devices communicate on the local network?
     MAC, Ethernet, VLAN, frames.
 
-L3 Network
+L3 Network (Subnet /24 /26 and IP stuff)
     Where does the packet need to go?
     IP, subnet, routing.
 
-L4 Transport
+L4 Transport (UDP/TCP/ stuff)
     Which application/process gets the data, and how?
     TCP, UDP, ports, reliability.
 
