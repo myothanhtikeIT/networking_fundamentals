@@ -61,7 +61,7 @@ https://example.com
 
 Used for network diagnostics and control/error messages.
 
-The most familiar example is `ping`.
+The most familiar example is `ping` command
 
 ``` bash
 ping 10.20.10.100
@@ -83,7 +83,7 @@ Debian
 
 ICMP does **not** use TCP/UDP ports.
 
-Therefore:
+so:
 
 ``` text
 ping 10.20.10.100
@@ -435,7 +435,7 @@ Ping:
 ping 10.20.10.10
 ```
 
-Limit the number of packets:
+Limiting the number of packets:
 
 ``` bash
 ping -c 4 10.20.10.10
@@ -934,7 +934,7 @@ ssh user@10.20.10.100
 
 # 14. Active Directory Networking Essentials
 
-For AD, remember these core services:
+For AD, core services are:
 
 ``` text
 DNS
@@ -1352,13 +1352,7 @@ w32tm /query /status
 
 When someone says:
 
-> "I can't connect to the server."
-
-Do not immediately think:
-
-> "The network is broken."
-
-Think:
+Think in :
 
 ``` text
 1. Do I have the right IP configuration?
@@ -1380,8 +1374,7 @@ Think:
 9. Am I authorized?
 ```
 
-And remember the three commands you've already used successfully in the
-ChocolateCompany lab:
+And the troubleshooting commands
 
 ``` bash
 ping 10.20.10.100
