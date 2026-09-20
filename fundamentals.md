@@ -404,7 +404,35 @@ nmap
 brain should be able to narrate the entire fucking journey:
 "Windows needs DNS first. DNS gets the destination IP. The workstation checks whether the destination is local. It isn't, so it sends the Ethernet frame to its default gateway. The switch forwards it through the correct VLAN. VyOS receives it, checks its routing table, performs NAT, forwards it toward the ISP, and the return traffic comes back through the NAT state back to the workstation."
 ---
+## OSI model 
+```
+L1 Physical
+    How do bits physically move?
 
+L2 Data Link
+    How do devices communicate on the local network?
+    MAC, Ethernet, VLAN, frames.
+
+L3 Network
+    Where does the packet need to go?
+    IP, subnet, routing.
+
+L4 Transport
+    Which application/process gets the data, and how?
+    TCP, UDP, ports, reliability.
+
+L5 Session
+    How is a communication session/dialogue managed?
+
+L6 Presentation
+    How is application data represented/transformed?
+    Encoding, encryption, compression.
+
+L7 Application
+    What network service/protocol is the application using?
+    HTTP, DNS, SMTP, SSH, etc. 
+```
+---
 
 
 
