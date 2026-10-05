@@ -273,3 +273,129 @@ Dumps the entire output file but **skips directly** to the first line where the 
 *   **Abbreviate Everything:** Cisco IOS only requires you to type enough unique characters to distinguish a command. You don't need to type `configure terminal`. Instead, type `conf t`. You don't need to type `show running-config`; type `sh run`. 
 *   **The Golden Rule (`no`):** In Cisco IOS, you delete configurations by prepending the word `no` to the exact command you used to create it. If you typed `ip routing` to enable it, type `no ip routing` to turn it off. If you typed `ip address 10.1.1.1 255.255.255.0`, type `no ip address` to strip it away.
 *   **Packet Tracer Auto-Save Reminder:** Because you are version-controlling your network designs in GitHub, always run `copy run start` (or `wr`) on your simulated routers *before* hitting save in Packet Tracer. Packet Tracer saves the state of the NVRAM file, meaning if you haven't written the RAM to NVRAM inside the router CLI, your configurations will be missing when you push/pull your repository files!
+---
+
+# Cisco IOS Architecture: VLANs, Trunking & Inter-VLAN Routing
+
+This guide details the exact Layer 2 and Layer 3 commands required to segment networks using Virtual LANs (VLANs), route traffic between them, and establish trunk links between interconnected switches.
+
+---
+
+## 1. Local VLAN Creation & Port Assignment
+
+By default, all switch ports belong to `VLAN 1` (The Native/Default VLAN). To secure and optimize your 3-floor network, you must create distinct broadcast domains and assign physical access ports to them.
+
+### Step 1: Define the VLANs in the Switch Database
+Run this on your main switches (`Floor 1 Switch`, `Floor 2 Switch`, `Floor 3 Switch`):
+```text
+Switch> enable
+Switch# configure terminal
+
+Switch(config)# vlan 10
+Switch(config-vlan)# name Server_Room_Data
+Switch(config-vlan)# vlan 20
+Switch(config-vlan)# name Office_Data
+Switch(config-vlan)# vlan 30
+Switch(config-vlan)# name Lab_Data
+Switch(config-vlan)# exit
+```
+
+### Step 2: Assign Access Ports to Endpoints
+Configure the individual ports connecting to target devices (like your Desktop PCs, Printers, and Access Points):
+```text
+! Configuring a single interface (e.g., Floor 2 Printer)
+Switch(config)# interface gigabitethernet 0/1
+Switch(config-if)# description Office_Network_Printer
+Switch(config-if)# switchport mode access
+Switch(config-if)# switchport access vlan 20
+Switch(config-if)# exit
+
+! Pro Tip: Use 'range' to configure multiple local PCs at once
+Switch(config)# interface range gigabitethernet 0/2 - 10
+Switch(config-if-range)# description Floor2_Office_Wired_PCs
+Switch(config-if-range)# switchport mode access
+Switch(config-if-range)# switchport access vlan 20
+```
+
+---
+
+## 2. Inter-Switch Connectivity (Trunking)
+
+An **Access Port** can only carry traffic for *one* specific VLAN. To allow your `Floor 1 Switch`, `Floor 2 Switch`, and `Floor 3 Switch` to pass traffic for all floors across a single physical wire, you must configure the interconnecting links as **Trunk Ports** using the standard **IEEE 802.1Q** protocol.
+
+### Configuring an Inter-Switch Link as a Trunk
+Run this on both ends of the cables linking your switches together (e.g., the link between Floor 1 Switch and Floor 2 Switch):
+```text
+Switch(config)# interface gigabitethernet 0/24
+Switch(config-if)# description Inter-Switch_Link_To_Next_Floor
+
+! Required on older enterprise hardware before setting trunk mode:
+! Switch(config-if)# switchport trunk encapsulation dot1q 
+
+Switch(config-if)# switchport mode trunk
+```
+
+### Optional Security Hardening for Trunks
+```text
+! Limit the trunk to only carry traffic for your specific lab VLANs
+Switch(config-if)# switchport trunk allowed vlan 10,20,30
+
+! Change the native (untagged) VLAN away from the default VLAN 1
+Switch(config-if)# switchport trunk native vlan 99
+```
+
+---
+
+## 3. Inter-VLAN Routing: Router-on-a-Stick (RoaS)
+
+Devices inside `VLAN 10` cannot talk to devices in `VLAN 20` without a Layer 3 device (a router) to pass packets between them. **Router-on-a-Stick** uses a single physical router interface split into virtual **Subinterfaces** to act as the Default Gateway for every individual VLAN.
+
+### On the "Company Router":
+Connect one physical router interface (e.g., `GigabitEthernet 0/1`) to a trunk port on your `Floor 1 Switch`.
+
+```text
+Router> enable
+Router# configure terminal
+
+! Step 1: Turn on the physical interface but DO NOT give it an IP address
+Router(config)# interface gigabitethernet 0/1
+Router(config-if)# description Trunk_Link_To_Internal_Switches
+Router(config-if)# no shutdown
+Router(config-if)# exit
+
+! Step 2: Create Subinterface for VLAN 10 (Server Room)
+Router(config)# interface gigabitethernet 0/1.10
+Router(config-subif)# description Default_Gateway_VLAN_10
+Router(config-subif)# encapsulation dot1Q 10
+Router(config-subif)# ip address 192.168.10.1 255.255.255.0
+Router(config-subif)# exit
+
+! Step 3: Create Subinterface for VLAN 20 (Office Floor)
+Router(config)# interface gigabitethernet 0/1.20
+Router(config-subif)# description Default_Gateway_VLAN_20
+Router(config-subif)# encapsulation dot1Q 20
+Router(config-subif)# ip address 192.168.20.1 255.255.255.0
+Router(config-subif)# exit
+
+! Step 4: Create Subinterface for VLAN 30 (Laboratory Floor)
+Router(config)# interface gigabitethernet 0/1.30
+Router(config-subif)# description Default_Gateway_VLAN_30
+Router(config-subif)# encapsulation dot1Q 30
+Router(config-subif)# ip address 192.168.30.1 255.255.255.0
+Router(config-subif)# exit
+```
+
+---
+
+## 4. Verification & Validation Commands
+
+Use these essential diagnostics tools to audit your Layer 2 switching architecture.
+
+*   `show vlan brief` (or `sh vlan br`)  
+    Confirms your custom VLAN IDs exist in the database and explicitly lists which physical access ports are bound to them.
+*   `show interfaces trunk` (or `sh int trunk`)  
+    Lists all active trunking links on the switch, verifies the encapsulation protocol (`802.1q`), and shows which VLANs are actively allowed to pass across the connection.
+*   `show mac address-table` (or `sh mac addr`)  
+    Displays the CAM table, letting you see exactly which physical switch port a device's hardware MAC address is sending frames through.
+*   `show ip route` (or `sh ip route`)  
+    Run this on the **Company Router**. You should see each subinterface listed as a `Directly Connected` (`C`) network. If they are missing, verify that the base physical interface is set to `no shutdown`.
