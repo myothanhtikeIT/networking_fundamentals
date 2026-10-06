@@ -399,3 +399,98 @@ Use these essential diagnostics tools to audit your Layer 2 switching architectu
     Displays the CAM table, letting you see exactly which physical switch port a device's hardware MAC address is sending frames through.
 *   `show ip route` (or `sh ip route`)  
     Run this on the **Company Router**. You should see each subinterface listed as a `Directly Connected` (`C`) network. If they are missing, verify that the base physical interface is set to `no shutdown`.
+
+---
+# Cisco IOS Architecture: Device Discovery & Neighbor Mapping
+
+This guide details how to use Layer 2 discovery protocols to dynamically map network topology, trace physical cable connections, and identify remote hardware interfaces directly from the CLI without physical access or diagram software.
+
+---
+
+## 1. Cisco Discovery Protocol (CDP)
+
+**CDP** is a Cisco-proprietary Layer 2 protocol enabled by default on nearly all Cisco enterprise switches, routers, and IP phones. It broadcasts periodic announcements out of all active interfaces to share device identity, hardware platforms, and port capabilities with directly connected neighbors.
+
+### Essential Discovery Commands
+Run these commands from Privileged EXEC mode (`#`). If configuring an interface, prepend them with `do`.
+
+*   `show cdp neighbors` (or `sh cdp nei`)  
+    Displays a structured, scannable table listing all directly connected neighbors, local exit interfaces, remote intake interfaces, and hardware platforms.
+*   `show cdp neighbors detail` (or `sh cdp nei det`)  
+    Dumps comprehensive architectural profiles for each neighbor, including **configured IPv4/IPv6 management addresses**, native VLAN settings, and remote OS versions.
+*   `show cdp interface`  
+    Displays the operational status of CDP across specific local physical ports along with packet timers.
+
+### Managing CDP State
+CDP can be toggled globally across the entire chassis or selectively disabled on untrusted edge interfaces (such as ports facing public networks or end-user workstations) to prevent information disclosure.
+
+```text
+! Turn off CDP globally across the entire device
+Core-Router(config)# no cdp run
+
+! Re-enable CDP globally
+Core-Router(config)# cdp run
+
+! Disable CDP selectively on a specific interface (e.g., WAN port facing ISP)
+Core-Router(config)# interface gigabitethernet 0/0
+Core-Router(config-if)# no cdp enable
+```
+
+---
+
+## 2. Reading the Neighbor Table
+
+here is a specific command that acts like a "radar" to show you exactly which physical ports are connected to other devices, without you having to manually trace cables in the Packet Tracer workspace.
+What is CDP?
+CDP stands for Cisco Discovery Protocol. It is a proprietary Cisco tool enabled by default on almost all Cisco routers and switches.
+Every few seconds, Cisco devices broadcast a tiny message out of their physical ports saying: "Hi! My name is Router A, and this message is coming out of my GigabitEthernet0/1 port." If another Cisco device is on the other end of that cable, it listens to that message and builds a local map.
+
+
+That command is show cdp neighbors (and its detailed version, show cdp neighbors detail).
+When you execute `show cdp neighbors`, the CLI outputs a matrix. Understanding how to cross-reference this table is critical for tracing connectivity:
+
+```text
+Device ID        Local Intrfce     Holdtme    Capability   Platform    Port ID
+ISP-Router       Gig 0/0           148        R            ISR4331     Gig 0/1
+Floor1-MainSW    Gig 0/1           162        S I          WS-C2960    Fast 0/24
+```
+
+### Column Breakdown:
+1.  **Device ID:** The configured hostname of the remote device sitting on the other end of the cable.
+2.  **Local Intrfce:** The physical port on the **current device you are logged into**. This is where your packet exits.
+3.  **Holdtme:** A countdown timer (in seconds) representing how long the device will cache this neighbor's data if no new announcements arrive. It refreshes automatically.
+4.  **Capability:** The functional role of the remote machine (`R` = Router, `S` = Switch, `H` = Host/PC, `P` = IP Phone).
+5.  **Platform:** The physical hardware chassis type or model number of the remote machine.
+6.  **Port ID:** The exact physical port on the **remote device** where the cable lands.
+
+---
+
+## 3. Link Layer Discovery Protocol (LLDP)
+
+If you migrate your labs out of Packet Tracer into open virtual environments (like `virt-manager` using GNS3 or EVE-NG) and mix Cisco nodes with alternative operating systems (Linux servers, firewalls, open-source routers), CDP will fail because it is proprietary. 
+
+To bridge this gap, you use **LLDP (IEEE 802.1AB)**, which is the open vendor-neutral industry standard. It behaves almost identically to CDP but must be enabled manually on many Cisco devices.
+
+### Enabling & Verifying LLDP
+```text
+! Step 1: Turn on LLDP globally across the device
+Core-Router(config)# lldp run
+
+! Step 2: Verify neighbors using open-standard syntax
+Core-Router# show lldp neighbors
+```
+
+### Granular Port Control for LLDP
+Unlike CDP, LLDP allows you to granularly control whether an interface only transmits discovery info or only receives it:
+```text
+Core-Router(config)# interface gigabitethernet 0/2
+Core-Router(config-if)# no lldp transmit     ! Stop telling this port who we are
+Core-Router(config-if)# no lldp receive      ! Stop listening for neighbors on this port
+```
+
+---
+
+## 4. Operational Tips & Shortcuts
+
+*   **Finding Secret IPs:** If you inherit a network lab with zero documentation and don't know what IP address to use to SSH into the next switch, run `show cdp neighbors detail`. The router will show you the exact management IP address of the neighboring box.
+*   **Layer 2 Dependency:** Because CDP and LLDP run directly inside the Data Link Layer (Layer 2), **they do not require IP addresses to function**. Two switches with blank, unconfigured configurations will still see each other perfectly via discovery tables the moment you plug a cable between them.
