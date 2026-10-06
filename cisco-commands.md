@@ -444,6 +444,26 @@ here is a specific command that acts like a "radar" to show you exactly which ph
 What is CDP?
 CDP stands for Cisco Discovery Protocol. It is a proprietary Cisco tool enabled by default on almost all Cisco routers and switches.
 Every few seconds, Cisco devices broadcast a tiny message out of their physical ports saying: "Hi! My name is Router A, and this message is coming out of my GigabitEthernet0/1 port." If another Cisco device is on the other end of that cable, it listens to that message and builds a local map.
+How to Read the Output
+If you log into your Company Router and run the command, you will see a clean table showing exactly who is plugged into what:
+CompanyRouter# show cdp neighbors
+
+Capability Codes: R - Router, T - Trans Bridge, B - Source Route Bridge
+                  S - Switch, H - Host, I - IGMP, r - Repeater, P - Phone
+
+Device ID        Local Intrfce     Holdtme    Capability   Platform    Port ID
+ISPRouter        Gig 0/0           148        R            ISR4331     Gig 0/1
+Floor1-MainSW    Gig 0/1           162        S I          WS-C2960    Fast 0/24
+
+Here is how you decode that table to understand your connections:
+• Device ID: The hostname of the device on the other end of the wire (ISPRouter, Floor1-MainSW).
+• Local Intrfce: The physical port on the current router you are logged into (e.g., your Company Router is using its own Gig 0/0 to talk to the ISP).
+• Capability: What kind of device it is (R for Router, S for Switch).
+• Platform: The actual model number of the hardware (e.g., a Cisco 4331 Router or a 2960 Switch).
+• Port ID: The physical port on the remote device that the cable plugs into (e.g., the cable lands on Gig 0/1 on the ISP Router).
+3. Quick Pro-Tips for Your Lab
+• The "Too Much Information" Escape: If you want to see the specific IP address of the neighboring router without logging into it, type show cdp neighbors detail. It will print out a breakdown including the remote interface's configured IP.
+• What if it's not a Cisco device? If you eventually test this in your virt-manager lab with mixed vendors (like an open-source VyOS router or a Linux server), CDP won't work because it's Cisco-only. Instead, you use the open industry standard command: show lldp neighbors (Link Layer Discovery Protocol). It produces the exact same style of table!
 
 
 That command is show cdp neighbors (and its detailed version, show cdp neighbors detail).
