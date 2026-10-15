@@ -1,6 +1,6 @@
-# Cisco IOS Cheat Sheet: Essential CCNA Commands & Practical Reference
+# Cisco IOS Essential Commands N Practical References
 
-A structured reference guide for Cisco IOS configuration, verification, and troubleshooting. Optimized for CCNA preparation, Packet Tracer labs, and real-world virtualized environments (GNS3/EVE-NG).
+A structured reference guide for Cisco IOS configuration, verification, and troubleshooting. Optimized for CCNA preparation, Packet Tracer labs, and real-world virtualized environments like GNS3/EVE-NG.
 
 ---
 
@@ -21,7 +21,7 @@ These commands control terminal behavior, prevent lockouts, and manage command-l
 
 ---
 
-## 2. Essential Device Initialization
+## 2 - Essential Device Initialization
 
 Run this baseline configuration block on every new router or switch you deploy.
 
@@ -47,7 +47,7 @@ Core-Router-01(config-line)# exit
 
 ---
 
-## 3. Interface & Layer 2/3 Configuration
+## 3- Interface and Layer 2/3 Configuration
 
 Commands used to provision ports, build subnets, allocate VLANs, and configure inter-switch trunks.
 
@@ -63,7 +63,7 @@ Commands used to provision ports, build subnets, allocate VLANs, and configure i
 *   `shutdown` / `shut`  
     Disables the port physically and logically.
 
-### Layer 2 (Switching & VLANs)
+### Layer 2 (Switching and VLANs)
 *   `vlan [vlan-id]` (e.g., `vlan 10`)  
     Creates a broadcast domain/VLAN inside the switch database.
 *   `name [vlan-name]`  
@@ -79,7 +79,7 @@ Commands used to provision ports, build subnets, allocate VLANs, and configure i
 
 ---
 
-## 4. Fundamental Routing & Infrastructure Services
+## 4 -  Fundamental Routing & Infrastructure Services
 
 Commands to establish connectivity across different broadcast domains.
 
@@ -107,7 +107,7 @@ Core-Router-01(dhcp-config)# dns-server 8.8.8.8
 
 ---
 
-## 5. System Maintenance & State Preservation
+## 5. System Maintenance and State Preservation
 
 Unlike Linux where changes persist live on disk files, Cisco IOS separates active state from saved state.
 
@@ -122,12 +122,12 @@ Unlike Linux where changes persist live on disk files, Cisco IOS separates activ
 
 ---
 
-## 6. The "CCNA Grind" Verification & Troubleshooting Suite
+## 6 - Verification and Troubleshooting stuff
 
-These are your primary diagnostics tools. Run these from Privileged EXEC mode (`#`). If inside a sub-config menu, prefix them with `do` (e.g., `do show ip interface brief`).
+These are the primary diagnostics tools. need to run these in Privileged EXEC mode (`#`). If inside a sub-config menu, prefix them with `do` (e.g., `do show ip interface brief`).
 
 *   `show ip interface brief` / `sh ip int br`  
-    **The Holy Grail Command.** Shows every port, its IP, status (physical layer link status), and protocol (data link layer line protocol).
+    Shows every port, its IP, status (physical layer link status), and protocol (data link layer line protocol).
 *   `show running-config` / `sh run`  
     Dumps the entire configuration file actively executing in RAM.
 *   `show vlan brief` / `sh vlan br`  
@@ -145,16 +145,16 @@ These are your primary diagnostics tools. Run these from Privileged EXEC mode (`
 
 ---
 
-## 7. CLI Tips, Tricks & Efficiency Secrets
+## 7-  CLI Tips, Tricks & Efficiency Secrets
 
-### The `do` Escape Hatch
+### the `do` escape work
 If you are modifying a port inside `Core-Router-01(config-if)#` and want to check your interfaces, typing `show ip interface brief` returns an error. Prefix the command with `do` to run Privileged EXEC queries from any location without stepping backwards:
 ```text
 Core-Router-01(config-if)# do show ip interface brief
 ```
 
 ### Navigating Terminal Interruption
-If you forget to enter `logging synchronous` and a system notification breaks your command line mid-sentence:
+If you forget to enter `logging synchronous` and a system notification breaks the command line mid-sentence:
 *   Press **`Ctrl + L`** or **`Ctrl + R`** to force the CLI to redraw your active, unsubmitted line on a clean line below the system notification.
 
 ### Tab Auto-Completion & Question Mark Help
@@ -189,7 +189,7 @@ Cisco IOS uses many classic Emacs-style keybindings. Memorizing these will keep 
 
 ---
 
-## 2. Dealing with Terminal Disasters & Freezes
+## 2. Dealing with Terminal Disasters and Freezes
 
 When you are deep in the zone, a frozen terminal or a broken command line can completely ruin your flow. Use these to maintain control.
 
