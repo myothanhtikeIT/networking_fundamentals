@@ -464,7 +464,7 @@ Here is how you decode that table to understand your connections:
 - Platform: The actual model number of the hardware (e.g., a Cisco 4331 Router or a 2960 Switch).
 - Port ID: The physical port on the remote device that the cable plugs into (e.g., the cable lands on Gig 0/1 on the ISP Router).
 
-#### Quick Pro-Tips for Your Lab
+#### Quick Pro-Tips for Lab
 - The "Too Much Information" Escape: If you want to see the specific IP address of the neighboring router without logging into it, type show cdp neighbors detail. It will print out a breakdown including the remote interface's configured IP.
 - What if it's not a Cisco device? If you eventually test this in your virt-manager lab with mixed vendors (like an open-source VyOS router or a Linux server), CDP won't work because it's Cisco-only. Instead, you use the open industry standard command: show lldp neighbors (Link Layer Discovery Protocol). It produces the exact same style of table!
 
