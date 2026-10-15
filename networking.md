@@ -29,7 +29,7 @@ Every device connected to a network needs an address.
 IP's job is simply to deliever packets to particular address.
 ---
 - By using TCP/IP Engineers and Scientists made the Interent
-real world example : Visiting  https: //reddit. com, whats happening under the hood
+real world example : Visiting  https: //reddit. com, stuff happening in the background
 ```bash 
 Browser => TPC create connection => IP find the route => Router forward packets => Reddit servers received request => Video packets sent back => TCP checks everything arrived => Browser plays posts/videos
 
