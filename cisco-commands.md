@@ -1,7 +1,7 @@
 # Cisco IOS Essential Commands N Practical References
 
-A structured reference guide for Cisco IOS configuration, verification, and troubleshooting. Optimized for CCNA preparation, Packet Tracer labs, and real-world virtualized environments like GNS3/EVE-NG.
-
+- A structured reference guide for Cisco IOS configuration, verification, and troubleshooting. Optimized for CCNA preparation, Packet Tracer labs, and real-world virtualized environments like GNS3/EVE-NG.
+- **note** Cisco's IOS and Apple's iOS are not the same xD
 ---
 
 ## 1. System Navigation & Environment Tweeks
@@ -217,7 +217,7 @@ Normally, `show` commands only work in Privileged EXEC mode (`Router#`). Prefixi
 ```text
 Router(config-if-range)# do show ip interface brief
 ```
-> ⚠️ **Note:** When using `do`, the CLI auto-complete feature (using `Tab` or `?`) is disabled for the rest of that command string in older IOS versions. You must type the show command fully and accurately.
+> **Note:** When using `do`, the CLI auto-complete feature (using `Tab` or `?`) is disabled for the rest of that command string in older IOS versions. You must type the show command fully and accurately.
 
 ### Interface Range Configuration
 Instead of stepping into 10 different access ports one by one to configure your Floor 2 Office PCs, group them together using the `range` keyword to configure them simultaneously:
@@ -268,9 +268,9 @@ Dumps the entire output file but **skips directly** to the first line where the 
 
 ---
 
-## 5. Lab Design & Git Management Safety Tips
+## 5. Lab Design, Git Management Safety and tips
 
-*   **Abbreviate Everything:** Cisco IOS only requires you to type enough unique characters to distinguish a command. You don't need to type `configure terminal`. Instead, type `conf t`. You don't need to type `show running-config`; type `sh run`. 
+*   **Abbreviate Everything:** Cisco IOS only requires you to type enough unique characters to distinguish a command. You don't have to type `configure terminal`. Instead, type `conf t`. You don't need to type `show running-config`; type `sh run`. 
 *   **The Golden Rule (`no`):** In Cisco IOS, you delete configurations by prepending the word `no` to the exact command you used to create it. If you typed `ip routing` to enable it, type `no ip routing` to turn it off. If you typed `ip address 10.1.1.1 255.255.255.0`, type `no ip address` to strip it away.
 *   **Packet Tracer Auto-Save Reminder:** Because you are version-controlling your network designs in GitHub, always run `copy run start` (or `wr`) on your simulated routers *before* hitting save in Packet Tracer. Packet Tracer saves the state of the NVRAM file, meaning if you haven't written the RAM to NVRAM inside the router CLI, your configurations will be missing when you push/pull your repository files!
 ---
@@ -464,12 +464,11 @@ Here is how you decode that table to understand your connections:
 - Platform: The actual model number of the hardware (e.g., a Cisco 4331 Router or a 2960 Switch).
 - Port ID: The physical port on the remote device that the cable plugs into (e.g., the cable lands on Gig 0/1 on the ISP Router).
 
-#### Quick Pro-Tips for Lab
-- The "Too Much Information" Escape: If you want to see the specific IP address of the neighboring router without logging into it, type show cdp neighbors detail. It will print out a breakdown including the remote interface's configured IP.
-- What if it's not a Cisco device? If you eventually test this in your virt-manager lab with mixed vendors (like an open-source VyOS router or a Linux server), CDP won't work because it's Cisco-only. Instead, you use the open industry standard command: show lldp neighbors (Link Layer Discovery Protocol). It produces the exact same style of table!
+#### Quick Tips for Lab
+- The "Too Much Information" Escape: If you want to see the specific IP address of the neighboring router without logging into it, type ` show cdp neighbors detail`. It will print out a breakdown including the remote interface's configured IP.
+- What if it's not a Cisco device? If you eventually test this in the virt-manager lab with mixed vendors (like an open-source VyOS router or a Linux server), CDP won't work because it's Cisco-only. Instead, use the open industry standard command: `show lldp neighbors` (Link Layer Discovery Protocol). It produces the exact same style of table.
 
-
-That command is show cdp neighbors (and its detailed version, show cdp neighbors detail).
+That command is `show cdp neighbors` (and its detailed version, show cdp neighbors detail).
 When you execute `show cdp neighbors`, the CLI outputs a matrix. Understanding how to cross-reference this table is critical for tracing connectivity:
 
 ```text
@@ -492,7 +491,7 @@ Floor1-MainSW    Gig 0/1           162        S I          WS-C2960    Fast 0/24
 
 If you migrate your labs out of Packet Tracer into open virtual environments (like `virt-manager` using GNS3 or EVE-NG) and mix Cisco nodes with alternative operating systems (Linux servers, firewalls, open-source routers), CDP will fail because it is proprietary. 
 
-To bridge this gap, you use **LLDP (IEEE 802.1AB)**, which is the open vendor-neutral industry standard. It behaves almost identically to CDP but must be enabled manually on many Cisco devices.
+To bridge this gap, use **LLDP (IEEE 802.1AB)**, which is the open vendor-neutral industry standard. It behaves almost identically to CDP but must be enabled manually on many Cisco devices.
 
 ### Enabling & Verifying LLDP
 ```text
@@ -517,3 +516,4 @@ Core-Router(config-if)# no lldp receive      ! Stop listening for neighbors on t
 
 *   **Finding Secret IPs:** If you inherit a network lab with zero documentation and don't know what IP address to use to SSH into the next switch, run `show cdp neighbors detail`. The router will show you the exact management IP address of the neighboring box.
 *   **Layer 2 Dependency:** Because CDP and LLDP run directly inside the Data Link Layer (Layer 2), **they do not require IP addresses to function**. Two switches with blank, unconfigured configurations will still see each other perfectly via discovery tables the moment you plug a cable between them.
+---
