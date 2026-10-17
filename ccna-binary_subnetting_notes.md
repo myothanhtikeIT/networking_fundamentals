@@ -323,7 +323,7 @@ Binary explains how the mask works. The mask table and block-size method make mo
 | `/29` | `255.255.255.248` | Fourth: 248 | 8 | 8 | 6 |
 | `/30` | `255.255.255.252` | Fourth: 252 | 4 | 4 | 2 |
 
-### Main formulas
+### main formulas
 
 ```text
 Host bits = 32 − prefix length
