@@ -6,7 +6,7 @@ IPv4 subnetting divides an IP address space into smaller logical networks. Under
 
 The core relationship:
 
-**CIDR prefix → subnet mask → block size / host bits → network boundaries**
+**CIDR prefix > subnet mask > block size / host bits > network boundaries**
 
 ---
 
