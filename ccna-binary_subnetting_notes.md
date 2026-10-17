@@ -4,7 +4,7 @@
 
 IPv4 subnetting divides an IP address space into smaller logical networks. Understanding binary explains how subnet masks identify the network portion of an address. In practical subnetting, the block-size method provides a faster way to find network boundaries without manually converting every address to binary.
 
-The core relationship is:
+The core relationship:
 
 **CIDR prefix → subnet mask → block size / host bits → network boundaries**
 
@@ -12,13 +12,13 @@ The core relationship is:
 
 ## 2 - Structure of a IPv4 Address 
 
-An IPv4 address contains **32 bits**, divided into four 8-bit groups called *octets*. Each octet is written as a decimal number from 0 to 255.
+An IPv4 address contains *32 bits*, divided into four 8-bit groups called *octets*. Each octet is written as a decimal number from 0 to 255.
 
-Example:
+example:
 
 ```text
 192.168.10.77
- 192 .168 .10  .77   ← four decimal octets
+ 192 .168 .10  .77  (four decimal octets) 
 ```
 
 Each octet contains eight binary bits. The place values from left to right are:
@@ -41,7 +41,7 @@ A binary `1` means that place value is included; a `0` means it is not.
 
 For example, `11100000` equals 224 because the first three bits are `1`, representing 128, 64, and 32. Their sum is 224.
 
-### Decimal-to-binary example
+### Decimal to binary example
 
 To convert 77 to binary, identify which place values add up to 77:
 
@@ -56,10 +56,9 @@ The selected values are 64, 8, 4, and 1, so:
 Place value: 128  64  32  16   8   4   2   1
 Bit:          0    1   0   0   1   1   0   1
 ```
+so, decimal 77 is binary `01001101`.
 
-Therefore, decimal 77 is binary `01001101`.
-
-Binary is the underlying representation used by subnet masks and IP calculations. Manual conversion is useful for understanding the mechanism, but the block-size method is usually quicker for routine subnet calculations.
+Binary is the underlying representation used by subnet masks and IP calculations. Manual conversion is useful for understanding the mechanism, but the block size method is usually quicker for routine subnet calculations.
 
 ---
 
@@ -85,7 +84,7 @@ Examples:
 
 The IP address alone does **not** determine its subnet. The prefix length or subnet mask is also required.
 
-For example, `192.168.10.139` could be configured with `/24`, `/25`, or `/23`. Each configuration places the address in a different-sized network.
+For example, `192.168.10.139` could be configured with `/24`, `/25`, or `/23`. Each configuration places the address in a different sized network.
 
 ---
 
@@ -109,7 +108,7 @@ These values are not arbitrary. They are the decimal forms of eight-bit patterns
 
 The values 0 and 255 are also valid mask-octet values. For example, `255.255.255.0` is a valid `/24` mask.
 
-### Why these values matter
+### why these values matter
 
 The mask-octet table lets a network administrator move between prefix notation and dotted-decimal notation, and calculate subnet block sizes. For instance:
 
@@ -194,8 +193,7 @@ This octet is often called the *interesting octet*. Subnet boundaries in that oc
 4. The subnet boundaries are `.0`, `.32`, `.64`, `.96`, `.128`, `.160`, `.192`, and `.224`.
 5. The address `.77` falls in the `.64–.95` block.
 
-Result:
-
+result:
 - Network address: `192.168.10.64`
 - Broadcast address: `192.168.10.95`
 - Usable range: `192.168.10.65–192.168.10.94`
