@@ -113,8 +113,8 @@ The values 0 and 255 are also valid mask-octet values. For example, `255.255.255
 The mask-octet table lets a network administrator move between prefix notation and dotted-decimal notation, and calculate subnet block sizes. For instance:
 
 ```text
-/27 → 255.255.255.224
-Block size in the fourth octet = 256 − 224 = 32
+/27 means 255.255.255.224
+Block size in the fourth octet = 256 - 224 = 32
 ```
 
 ---
@@ -124,14 +124,14 @@ Block size in the fourth octet = 256 − 224 = 32
 IPv4 has 32 bits in total.
 
 ```text
-Host bits = 32 − prefix length
+Host bits = 32 - prefix length
 Total addresses = 2^(host bits)
 ```
 
 For ordinary IPv4 subnets where the network and broadcast addresses are reserved:
 
 ```text
-Usable host addresses = 2^(host bits) − 2
+Usable host addresses = 2^(host bits) - 2
 ```
 
 Examples:
@@ -147,7 +147,7 @@ Examples:
 | `/29` | 3 | 8 | 6 |
 | `/30` | 2 | 4 | 2 |
 
-Exceptions to the usual `−2` formula include `/31`, commonly used for point-to-point links, and `/32`, which identifies one IPv4 address.
+Exceptions to the usual `-2` formula include `/31`, commonly used for point-to-point links, and `/32`, which identifies one IPv4 address.
 
 ### Relationship to `/24`
 
@@ -170,7 +170,7 @@ The block-size method is a practical shortcut for finding subnet boundaries.
 For the octet where the subnet mask is neither 255 nor 0:
 
 ```text
-Block size = 256 − mask-octet value
+Block size = 256 - mask-octet value
 ```
 
 This octet is often called the *interesting octet*. Subnet boundaries in that octet occur at multiples of the block size.
@@ -189,29 +189,29 @@ This octet is often called the *interesting octet*. Subnet boundaries in that oc
 
 1. `/27` corresponds to `255.255.255.224`.
 2. The interesting octet is the fourth octet, with value 224.
-3. Block size: `256 − 224 = 32`.
+3. Block size: `256 - 224 = 32`.
 4. The subnet boundaries are `.0`, `.32`, `.64`, `.96`, `.128`, `.160`, `.192`, and `.224`.
-5. The address `.77` falls in the `.64–.95` block.
+5. The address `.77` falls in the `.64-.95` block.
 
 result:
 - Network address: `192.168.10.64`
 - Broadcast address: `192.168.10.95`
-- Usable range: `192.168.10.65–192.168.10.94`
+- Usable range: `192.168.10.65-192.168.10.94`
 - Total addresses: 32
 - Normally usable hosts: 30
 
 ### Example B: `192.168.10.139/25`
 
 1. `/25` corresponds to `255.255.255.128`.
-2. Block size in the fourth octet: `256 − 128 = 128`.
-3. The two blocks are `.0–.127` and `.128–.255`.
+2. Block size in the fourth octet: `256 - 128 = 128`.
+3. The two blocks are `.0-.127` and `.128-.255`.
 4. `.139` falls in the second block.
 
 Result:
 
 - Network address: `192.168.10.128/25`
 - Broadcast address: `192.168.10.255`
-- Usable range: `192.168.10.129–192.168.10.254`
+- Usable range: `192.168.10.129-192.168.10.254`
 - Total addresses: 128
 - Normally usable hosts: 126
 
@@ -219,25 +219,24 @@ Result:
 
 For `/23`, the mask is `255.255.254.0`. The interesting octet is the **third** octet.
 
-1. Block size: `256 − 254 = 2`.
-2. Third-octet subnet boundaries occur at 0, 2, 4, 6, 8, 10, and so on.
+1. Block size: `256 - 254 = 2`.
+2. Third octet subnet boundaries occur at 0, 2, 4, 6, 8, 10, and so on.
 3. The third octet is 5, which falls in the block from 4 through 5.
 
 Result:
-
 - Network address: `10.1.4.0/23`
 - Broadcast address: `10.1.5.255`
-- Usable range: `10.1.4.1–10.1.5.254`
+- Usable range: `10.1.4.1-10.1.5.254`
 - Total addresses: 512
 - Normally usable hosts: 510
 
-### Full-octet boundaries
+### Full octet boundaries
 
 The block-size shortcut is applied to the interesting octet. When a prefix ends on an octet boundary, such as `/8`, `/16`, or `/24`, complete octets are copied or treated as fully variable as appropriate. For example, a `/24` has mask `255.255.255.0` and spans all 256 values of the fourth octet.
 
 ---
 
-## 7. How Binary Calculates a Network Address
+## 7 - How binary calculates a network address
 
 A host can determine its network address by applying a bitwise **AND** operation between its IPv4 address and subnet mask.
 
@@ -271,10 +270,10 @@ Host A: 192.168.10.70/26
 Host B: 192.168.10.100/26
 ```
 
-A `/26` uses mask `255.255.255.192` and has a block size of `256 − 192 = 64` in the fourth octet.
+A `/26` uses mask `255.255.255.192` and has a block size of `256 - 192 = 64` in the fourth octet.
 
-- Host A (`.70`) belongs to the `.64–.127` block.
-- Host B (`.100`) also belongs to the `.64–.127` block.
+- Host A (`.70`) belongs to the `.64-.127` block.
+- Host B (`.100`) also belongs to the `.64-.127` block.
 
 Both hosts are in `192.168.10.64/26`.
 
@@ -326,14 +325,14 @@ Binary explains how the mask works. The mask table and block-size method make mo
 ### main formulas
 
 ```text
-Host bits = 32 − prefix length
+Host bits = 32 - prefix length
 Total addresses = 2^(host bits)
-Normally usable hosts = 2^(host bits) − 2
-Block size = 256 − interesting mask-octet value
-Wildcard mask = 255.255.255.255 − subnet mask
+Normally usable hosts = 2^(host bits) - 2
+Block size = 256 - interesting mask-octet value
+Wildcard mask = 255.255.255.255 - subnet mask
 ```
 
-The usual usable-host formula has exceptions, notably `/31` point-to-point links and `/32` host routes.
+The usual usable host formula has exceptions, notably `/31` point-to-point links and `/32` host routes.
 
 ### facts
 
@@ -342,6 +341,6 @@ The usual usable-host formula has exceptions, notably `/31` point-to-point links
 - `/26` = `255.255.255.192` = 64-address blocks.
 - `/27` = `255.255.255.224` = 32-address blocks.
 - `/23` = `255.255.254.0` = two consecutive `/24` address ranges.
-- A smaller prefix number means a larger network; a larger prefix number means a smaller network.
+- A smaller prefix number means a larger network, a larger prefix number means a smaller network.
 - An IP address without a prefix length or subnet mask does not uniquely identify its subnet.
 - The block-size method is usually quicker than converting every octet into binary manually.
