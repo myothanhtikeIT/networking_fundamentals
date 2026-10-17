@@ -3,12 +3,12 @@
 > Practical networking notes for Linux, Windows/PowerShell, and small
 > enterprise labs.
 >
-> Focus: the stuff you will actually use while troubleshooting servers,
+> Focus: the stuff will actually use while troubleshooting servers,
 > clients, routers, DNS, AD, SSH, SMB, and connectivity.
 
 ------------------------------------------------------------------------
 
-## 1. The Mental Model
+## 1 -  The Mental Model
 
 Think about networking as layers of responsibility.
 
@@ -44,7 +44,6 @@ https://example.com
 \\CC-FILE01\Public
     -> SMB -> TCP/445 -> IP -> Ethernet/Wi-Fi
 ```
-
 ### Important distinction
 
 -   **Protocol** = rules/language used by networked systems.
@@ -96,12 +95,11 @@ nc -zv 10.20.10.100 22
 ```
 
 test different things.
-
 A host can block ICMP while still accepting TCP connections.
 
 ------------------------------------------------------------------------
 
-# 3. TCP
+# 3-  TCP
 
 **TCP = Transmission Control Protocol**
 
@@ -127,21 +125,20 @@ Server -> SYN-ACK
 Client -> ACK
 ```
 
-You normally do not interact with TCP directly. Applications use it.
+normally do not interact with TCP directly. usually applications use it.
 
-Examples:
+for examples:
 
 ``` bash
 ssh user@10.20.10.10
 curl https://example.com
 smbclient //10.20.10.10/Public
 ```
-
 All of those may use TCP underneath.
 
 ------------------------------------------------------------------------
 
-# 4. UDP
+# 4- UDP
 
 **UDP = User Datagram Protocol**
 
@@ -158,14 +155,13 @@ UDP/123    NTP
 UDP/161    SNMP
 ```
 
-UDP does not provide TCP-style connection establishment or delivery
-guarantees.
+UDP does not provide TCP-style connection establishment or delivery guarantees.
 
 Applications choose TCP or UDP depending on their requirements.
 
 ------------------------------------------------------------------------
 
-# 5. SMB
+# 5 -  SMB (Server Message Block)
 
 **SMB = Server Message Block**
 
@@ -221,7 +217,7 @@ Ethernet/Wi-Fi
 
 ------------------------------------------------------------------------
 
-# 6. Essential Everyday Ports
+# 6. Core Everyday Ports
 
 ## Core Infrastructure
 
@@ -292,7 +288,7 @@ Example:
 nslookup google.com
 ```
 
-Your ChocolateCompany lab:
+My ChocolateCompany lab:
 
 ``` bash
 nslookup corp.chocolatecompany.local
