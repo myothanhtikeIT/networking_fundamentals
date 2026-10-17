@@ -1,57 +1,33 @@
 # Subnetting Study Guide (CCNA 200-301)
 
-A practical, no-fluff guide to IPv4 and IPv6 addressing for the CCNA: binary and masks, the block-size trick, real troubleshooting, splitting networks, VLSM, wildcard masks, route summarization, IPv6 basics, Cisco IOS commands, and 65 practice problems with answers.
+A practical IPv4 and IPv6 addressing for the CCNA: binary and masks, the block-size trick, real troubleshooting stuff, splitting networks, VLSM, wildcard masks, route summarization, IPv6 basics, Cisco IOS commands, and 65 practice problems with answers.
 
-**How to use this guide**
+## Roadmap
 
-1. Read one lesson.
-2. Write the [cheat sheet](#cheat-sheet) from memory on paper.
-3. Do the matching [practice problems](#practice-problems) with the answers covered.
-4. Follow the [daily drill routine](#daily-drill-routine). Reps matter far more than reading.
-
-## Table of Contents
-
-- [Study Roadmap](#study-roadmap)
-- [Cheat Sheet](#cheat-sheet)
-- [Lesson 1: Binary and Subnet Masks](#lesson-1-binary-and-subnet-masks)
-- [Lesson 2: The Block-Size Trick](#lesson-2-the-block-size-trick)
-- [Lesson 3: Subnetting in Real Troubleshooting](#lesson-3-subnetting-in-real-troubleshooting)
-- [Lesson 4: Splitting a Network into Equal Subnets](#lesson-4-splitting-a-network-into-equal-subnets)
-- [Lesson 5: Masks Beyond the Last Octet](#lesson-5-masks-beyond-the-last-octet)
-- [Lesson 6: VLSM](#lesson-6-vlsm)
-- [Lesson 7: Wildcard Masks](#lesson-7-wildcard-masks)
-- [Lesson 8: Route Summarization](#lesson-8-route-summarization)
-- [Lesson 9: IPv6 Addressing and Subnetting](#lesson-9-ipv6-addressing-and-subnetting)
-- [Cisco IOS Quick Reference](#cisco-ios-quick-reference)
-- [Common Mistakes](#common-mistakes)
-- [Daily Drill Routine](#daily-drill-routine)
-- [Practice Problems](#practice-problems)
-
-## Study Roadmap
-
-- [ ] Lesson 1: Binary and masks
-- [ ] Lesson 2: Block-size trick
-- [ ] Lesson 3: Troubleshooting rules
-- [ ] Lesson 4: Equal subnets (borrowing bits)
-- [ ] Lesson 5: Masks beyond the last octet
-- [ ] Lesson 6: VLSM (subnets of different sizes)
-- [ ] Lesson 7: Wildcard masks (ACLs, OSPF)
-- [ ] Lesson 8: Route summarization
-- [ ] Lesson 9: IPv6 addressing and subnetting
-- [ ] Practice problems 1 to 65 completed
-- [ ] Can find network, broadcast and range in under 30 seconds
+- Lesson 1: Binary and masks
+- Lesson 2: Block-size trick
+- Lesson 3: Troubleshooting rules
+- Lesson 4: Equal subnets (borrowing bits)
+- Lesson 5: Masks beyond the last octet
+- Lesson 6: VLSM (subnets of different sizes)
+- Lesson 7: Wildcard masks (ACLs, OSPF)
+- Lesson 8: Route summarization
+- Lesson 9: IPv6 addressing and subnetting
+- Practice problems 1 to 65 completed
+- to be able to find network, broadcast and range in under 30 seconds
 
 ## Cheat Sheet
 
-**Memorize this. Everything else builds on it.**
+** Need to Memorize because everything else builds on it. :) **
 
-### Mask octet values
+### Mask octet values 
 
 Only eight values are possible in a mask octet:
 
 | Ones | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
 |---|---|---|---|---|---|---|---|---|
 | Value | 128 | 192 | 224 | 240 | 248 | 252 | 254 | 255 |
+
 
 ### Last-octet masks
 
