@@ -208,7 +208,7 @@ Examples:
 | `/29` | 3 | 8 | 6 |
 | `/30` | 2 | 4 | 2 |
 
-Exceptions to the usual `-2` formula include `/31`, commonly used for point-to-point links, and `/32`, which identifies one IPv4 address.
+exceptions to the usual `-2` formula include `/31`, commonly used for point-to-point links, and `/32`, which identifies one IPv4 address.
 
 ### Relationship to `/24`
 
@@ -218,7 +218,7 @@ A `/24` has 8 host bits in the fourth octet, so it contains `2^8 = 256` total ad
 - `/26` has 6 host bits: `2^6 = 64` total addresses, one-quarter as many as `/24`.
 - `/23` has 9 host bits: `2^9 = 512` total addresses, twice as many as `/24`.
 
-Each time the prefix length increases by one, the address block becomes half as large. Each time the prefix decreases by one, the address block becomes twice as large.
+each time the prefix length increases by one, the address block becomes half as large. Each time the prefix decreases by one, the address block becomes twice as large.
 
 ---
 
@@ -261,23 +261,21 @@ result:
 - Total addresses: 32
 - Normally usable hosts: 30
 
-### Example B: `192.168.10.139/25`
+### example B: `192.168.10.139/25`
 
 1. `/25` corresponds to `255.255.255.128`.
 2. Block size in the fourth octet: `256 - 128 = 128`.
 3. The two blocks are `.0-.127` and `.128-.255`.
 4. `.139` falls in the second block.
 
-Result:
-
+result:
 - Network address: `192.168.10.128/25`
 - Broadcast address: `192.168.10.255`
 - Usable range: `192.168.10.129-192.168.10.254`
 - Total addresses: 128
 - Normally usable hosts: 126
 
-### Example C: `10.1.5.9/23`
-
+### example C: `10.1.5.9/23`
 For `/23`, the mask is `255.255.254.0`. The interesting octet is the **third** octet.
 
 1. Block size: `256 - 254 = 2`.
@@ -292,12 +290,11 @@ Result:
 - Normally usable hosts: 510
 
 ### Full octet boundaries
-
 The block-size shortcut is applied to the interesting octet. When a prefix ends on an octet boundary, such as `/8`, `/16`, or `/24`, complete octets are copied or treated as fully variable as appropriate. For example, a `/24` has mask `255.255.255.0` and spans all 256 values of the fourth octet.
 
 ---
 
-## 7 - How binary calculates a network address
+## 7 - how binary calculates a network address
 
 A host can determine its network address by applying a bitwise **AND** operation between its IPv4 address and subnet mask.
 
@@ -315,7 +312,6 @@ AND result:   01000000   (64)
 ```
 
 The network address is therefore `192.168.10.64/27`.
-
 This operation explains the mechanism behind subnet calculations. For many manual subnetting exercises, the block-size method provides the same result more quickly.
 
 ---
