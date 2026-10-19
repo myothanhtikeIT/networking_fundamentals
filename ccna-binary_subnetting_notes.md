@@ -75,16 +75,77 @@ Examples:
 
 | CIDR prefix | Subnet mask | Network bits | Host bits |
 |---|---|---:|---:|
+| `/0` | `0.0.0.0` | 0 | 32 |
+| `/1` | `128.0.0.0` | 1 | 31 |
+| `/2` | `192.0.0.0` | 2 | 30 |
+| `/3` | `224.0.0.0` | 3 | 29 |
+| `/4` | `240.0.0.0` | 4 | 28 |
+| `/5` | `248.0.0.0` | 5 | 27 |
+| `/6` | `252.0.0.0` | 6 | 26 |
+| `/7` | `254.0.0.0` | 7 | 25 |
+| `/8` | `255.0.0.0` | 8 | 24 |
+| `/9` | `255.128.0.0` | 9 | 23 |
+| `/10` | `255.192.0.0` | 10 | 22 |
+| `/11` | `255.224.0.0` | 11 | 21 |
+| `/12` | `255.240.0.0` | 12 | 20 |
+| `/13` | `255.248.0.0` | 13 | 19 |
+| `/14` | `255.252.0.0` | 14 | 18 |
+| `/15` | `255.254.0.0` | 15 | 17 |
+| `/16` | `255.255.0.0` | 16 | 16 |
+| `/17` | `255.255.128.0` | 17 | 15 |
+| `/18` | `255.255.192.0` | 18 | 14 |
+| `/19` | `255.255.224.0` | 19 | 13 |
+| `/20` | `255.255.240.0` | 20 | 12 |
+| `/21` | `255.255.248.0` | 21 | 11 |
+| `/22` | `255.255.252.0` | 22 | 10 |
+| `/23` | `255.255.254.0` | 23 | 9 |
 | `/24` | `255.255.255.0` | 24 | 8 |
 | `/25` | `255.255.255.128` | 25 | 7 |
 | `/26` | `255.255.255.192` | 26 | 6 |
 | `/27` | `255.255.255.224` | 27 | 5 |
 | `/28` | `255.255.255.240` | 28 | 4 |
-| `/23` | `255.255.254.0` | 23 | 9 |
+| `/29` | `255.255.255.248` | 29 | 3 |
+| `/30` | `255.255.255.252` | 30 | 2 |
+| `/31` | `255.255.255.254` | 31 | 1 |
+| `/32` | `255.255.255.255` | 32 | 0 |
 
-The IP address alone does **not** determine its subnet. The prefix length or subnet mask is also required.
 
-For example, `192.168.10.139` could be configured with `/24`, `/25`, or `/23`. Each configuration places the address in a different sized network.
+## Fast calcing formulas
+
+- **Network bits** = CIDR prefix.
+- **Host bits** = `32 - CIDR prefix`.
+- **Total IPv4 addresses** = `2^(host bits)`.
+- **Conventional usable host addresses** = `2^(host bits) - 2` for ordinary subnets, with special cases for `/31` point-to-point links and `/32` host routes.
+
+
+## Common Subnet Sizes
+
+| CIDR prefix | Total addresses | Usable host addresses* | Common use |
+|---|---:|---:|---|
+| `/24` | 256 | 254 | Small LAN |
+| `/25` | 128 | 126 | Half of a `/24` |
+| `/26` | 64 | 62 | Smaller LAN or VLAN |
+| `/27` | 32 | 30 | Small subnet |
+| `/28` | 16 | 14 | Small device group |
+| `/29` | 8 | 6 | Very small subnet |
+| `/30` | 4 | 2 | Traditional router link |
+| `/31` | 2 | 2 | Point-to-point link that supports `/31` addressing |
+| `/32` | 1 | 1 | Single-host route |
+
+\* Usable host counts follow conventional IPv4 subnetting rules. `/31` links can use both addresses as endpoints on suitable point-to-point links. A `/32` represents one specific IPv4 address, typically used as a host route rather than a regular multi-host subnet.
+
+## subnetting memory tip and trikcs
+
+everytime time the CIDR prefix increases by one, one bit is borrowed for the network and the total address count is halved:
+- `/24` = 256 total addresses
+- `/25` = 128 total addresses
+- `/26` = 64 total addresses
+- `/27` = 32 total addresses
+- `/28` = 16 total addresses
+
+The IP address alone does not determine its subnet. the prefix length or subnet mask is also required.
+
+example, `192.168.10.139` could be configured with `/24`, `/25`, or `/23`. each configuration places the address in a different sized network.
 
 ---
 
@@ -259,7 +320,7 @@ This operation explains the mechanism behind subnet calculations. For many manua
 
 ---
 
-## 8. Determining Whether Two Hosts Share a Subnet
+## 8 - Determining Whether Two Hosts Share a Subnet
 
 The prefix or subnet mask must be known for each host. An IP address alone is insufficient to determine its subnet.
 
@@ -291,7 +352,7 @@ They are in different IP subnets. Communication between them requires Layer 3 ro
 
 ---
 
-## 9. Practical Uses in Network Administration
+## 9- Practical Uses in Network Administration
 
 Subnetting knowledge is used to:
 
