@@ -4,7 +4,6 @@
 
 **DHCP (Dynamic Host Configuration Protocol)** automatically provides network configuration to clients.
 
-
 > DHCP gives computers IP addresses.
 > **DHCP automatically provides clients with the network configuration they need to communicate on a network.**
 
@@ -259,12 +258,9 @@ DNS server:
 DNS suffix:
 corp.local
 ```
-
-The important concept is:
-
 > **DHCP distributes network configuration, not merely IP addresses.**
 
-You do not need to memorize every DHCP option number.
+do not need to memorize every DHCP option number.
 
 ---
 
