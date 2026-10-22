@@ -1,7 +1,7 @@
 # Subnetting Study Guide (CCNA 200-301)
 
 A practical IPv4 and IPv6 addressing for the CCNA: binary and masks, the block-size trick, real troubleshooting stuff, splitting networks, VLSM, wildcard masks, route summarization, IPv6 basics, Cisco IOS commands, and 65 practice problems with answers.
-
+* CIDR means Classless Inter-Domain Routing
 ## Roadmap
 
 - Lesson 1: Binary and masks
