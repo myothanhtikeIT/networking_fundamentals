@@ -1,13 +1,438 @@
-# Subnetting Study Guide (CCNA 200-301)
+# Subnetting Study (CCNA 200-301)
 
-A practical IPv4 and IPv6 addressing for the CCNA: binary and masks, the block-size trick, real troubleshooting stuff, splitting networks, VLSM, wildcard masks, route summarization, IPv6 basics, Cisco IOS commands, and 65 practice problems with answers.
+# CCNA Networking Subnetting Fundamentals
+
+## Understanding an IPv4 Address
+
+An IPv4 address is a 32-bit number. It is written as four decimal numbers separated by dots. Each of those four sections is called an **octet** because it contains eight bits.
+
+For example:
+
+```text
+192.168.1.10
+```
+
+An IPv4 address therefore has this structure:
+
+```text
+8 bits . 8 bits . 8 bits . 8 bits = 32 bits
+```
+
+Each bit can hold one of two values:
+
+- `0`
+- `1`
+
+The decimal values represented by the eight bit positions in an octet are:
+
+| Bit position | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Bit value | 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1 |
+
+To convert a binary octet into decimal, add the values of the positions containing `1`.
+
+For example:
+
+```text
+Binary:  11000000
+Values:  128 + 64 = 192
+Decimal: 192
+```
+
+An octet can represent values from `0` to `255`. There are 256 possible values because eight bits can create 256 different combinations:
+
+```text
+2*8 = 256
+```
+
+The range includes both endpoints: `0` through `255`.
+
+## 2. Network Portion and Host Portion
+
+An IPv4 address contains two logical parts:
+
+- **Network portion:** identifies the network to which the address belongs.
+- **Host portion:** identifies an individual interface or device within that network.
+
+A subnet mask tells a device which bits belong to the network portion and which bits belong to the host portion.
+
+In a subnet mask:
+
+- A binary `1` represents a network bit.
+- A binary `0` represents a host bit.
+
+The `1` bits must appear consecutively from the left, followed by the `0` bits. A valid subnet mask does not alternate between `1` and `0`.
+
+For example, this is a valid mask:
+
+```text
+11111111.11111111.11111111.00000000
+```
+
+This is not a valid subnet mask because the `1` bits are not continuous from the left:
+
+```text
+11111111.00001111.11111111.00000000
+```
+
+## 3. Understanding CIDR Notation
+
+CIDR notation is the slash number written after an IPv4 address. For example:
+
+```text
+192.168.1.10/24
+```
+
+The `/24` means that the first **24 bits** are network bits. The remaining `8 bits` are host bits, because an IPv4 address always contains 32 bits.
+
+```text
+32 total bits - 24 network bits = 8 host bits
+```
+
+The slash number does not mean that there are 24 addresses. It tells us how many leading bits of the subnet mask are set to `1`.
+
+The same rule applies to other prefixes:
+
+- `/25` means 25 network bits and 7 host bits.
+- `/26` means 26 network bits and 6 host bits.
+- `/27` means 27 network bits and 5 host bits.
+
+Every time the prefix number increases by one, one more bit becomes part of the network portion and one fewer bit remains for host addresses.
+
+## 4. Converting a Prefix into a Subnet Mask
+
+To create the subnet mask, write the number of network bits as consecutive `1` bits from left to right, then fill the remaining positions with `0` bits. Convert each group of eight bits into decimal using the bit values shown earlier.
+
+### Example: `/24`
+
+A `/24` mask has 24 network bits and 8 host bits:
+
+```text
+Binary mask:
+11111111.11111111.11111111.00000000
+
+Decimal mask:
+255.255.255.0
+```
+
+### Example: `/25`
+
+A `/25` mask has 25 network bits. The first three octets contain 24 network bits, so one additional network bit is set in the fourth octet:
+
+```text
+Binary mask:
+11111111.11111111.11111111.10000000
+
+Fourth octet:
+128
+
+Decimal mask:
+255.255.255.128
+```
+
+### Example: `/26`
+
+A `/26` mask has 26 network bits. Two bits are set in the fourth octet:
+
+```text
+Binary mask:
+11111111.11111111.11111111.11000000
+
+Fourth octet:
+128 + 64 = 192
+
+Decimal mask:
+255.255.255.192
+```
+
+### Common prefix examples
+
+| CIDR prefix | Binary value in the changing octet | Subnet mask |
+|---|---|---|
+| `/24` | `00000000` | `255.255.255.0` |
+| `/25` | `10000000` | `255.255.255.128` |
+| `/26` | `11000000` | `255.255.255.192` |
+| `/27` | `11100000` | `255.255.255.224` |
+| `/28` | `11110000` | `255.255.255.240` |
+
+The changing octet is the octet in which the prefix ends. For `/25` through `/28`, that is the fourth octet.
+
+## 5. Why the Number of Subnets Doubles
+
+Consider a `/24` network:
+
+```text
+192.168.1.0/24
+```
+
+A `/24` has 24 network bits and 8 host bits. Its final octet can use all eight bits for host combinations, giving 256 total addresses:
+
+```text
+2^8 = 256 addresses
+```
+
+Now increase the prefix from `/24` to `/25`. One bit that was previously a host bit becomes a network bit. That new network bit has only two possible values:
+
+```text
+0 or 1
+```
+
+Those two possible values divide the original `/24` range into two equal `/25` networks. Each network has seven host bits:
+
+```text
+2^7 = 128 addresses per /25 network
+```
+
+Increase the prefix again, from `/25` to `/26`. A second bit becomes a network bit. Two network bits can create four combinations:
+
+```text
+00
+01
+10
+11
+```
+
+That creates four `/26` networks inside the original `/24` range. Each has six host bits:
+
+```text
+2^6 = 64 addresses per /26 network
+```
+
+This is why the number of equal-sized subnets doubles whenever one more network bit is added. Each additional bit has two possible values, so it doubles the number of possible network combinations.
+
+For subnetting an original `/24` network:
+
+| Prefix | Additional network bits beyond `/24` | Number of subnets | Addresses per subnet |
+|---|---:|---:|---:|
+| `/24` | 0 | 1 | 256 |
+| `/25` | 1 | 2 | 128 |
+| `/26` | 2 | 4 | 64 |
+| `/27` | 3 | 8 | 32 |
+| `/28` | 4 | 16 | 16 |
+| `/29` | 5 | 32 | 8 |
+| `/30` | 6 | 64 | 4 |
+
+The number of subnets created inside the original `/24` is:
+
+```text
+2^(number of additional network bits)
+```
+
+For example, `/26` is two bits longer than `/24`:
+
+```text
+2^2 = 4 subnets
+```
+
+## 6. Understanding Address Ranges and Subnet Boundaries
+
+When a `/24` network is divided into smaller subnets, the subnets cover the same original address range. They do not move into the next third octet.
+
+The original `/24` range is:
+
+```text
+192.168.1.0 - 192.168.1.255
+```
+
+That is 256 addresses in total.
+
+### Dividing the `/24` into two `/25` networks
+
+Each `/25` contains 128 addresses:
+
+| Subnet | Full address range | Network address | Broadcast address |
+|---|---|---|---|
+| `192.168.1.0/25` | `192.168.1.0 - 192.168.1.127` | `192.168.1.0` | `192.168.1.127` |
+| `192.168.1.128/25` | `192.168.1.128 - 192.168.1.255` | `192.168.1.128` | `192.168.1.255` |
+
+The two ranges contain 128 addresses each. Together, they cover the original 256-address `/24` range.
+
+### Dividing the `/24` into four `/26` networks
+
+Each `/26` contains 64 addresses:
+
+| Subnet | Full address range | Network address | Broadcast address |
+|---|---|---|---|
+| `192.168.1.0/26` | `192.168.1.0 - 192.168.1.63` | `192.168.1.0` | `192.168.1.63` |
+| `192.168.1.64/26` | `192.168.1.64 - 192.168.1.127` | `192.168.1.64` | `192.168.1.127` |
+| `192.168.1.128/26` | `192.168.1.128 - 192.168.1.191` | `192.168.1.128` | `192.168.1.191` |
+| `192.168.1.192/26` | `192.168.1.192 - 192.168.1.255` | `192.168.1.192` | `192.168.1.255` |
+
+The four ranges contain 64 addresses each. Together, they also cover the original 256-address `/24` range.
+
+## 7. Calculating the Block Size
+
+The **block size** tells us how far apart subnet network addresses are in the octet where the subnetting occurs.
+
+For the octet where the mask changes from `1` bits to `0` bits, calculate:
+
+```text
+Block size = 256 - subnet mask value in that octet
+```
+
+Examples:
+
+| Prefix | Subnet mask | Changing octet value | Block size |
+|---|---|---:|---:|
+| `/25` | `255.255.255.128` | 128 in the fourth octet | 128 |
+| `/26` | `255.255.255.192` | 192 in the fourth octet | 64 |
+| `/27` | `255.255.255.224` | 224 in the fourth octet | 32 |
+| `/28` | `255.255.255.240` | 240 in the fourth octet | 16 |
+
+For `/26`:
+
+```text
+256 - 192 = 64
+```
+
+Therefore, the network addresses increase in steps of 64 in the fourth octet:
+
+```text
+.0, .64, .128, .192
+```
+
+The block size and the subnet mask value are different things. For `/26`, the mask value is `192`, while the block size is `64`.
+
+For `/24`, the changing octet is the fourth octet and its mask value is `0`:
+
+```text
+256 - 0 = 256
+```
+
+For prefixes that end in an earlier octet, the same rule applies to that octet. For example, `/23` has this mask:
+
+```text
+11111111.11111111.11111110.00000000
+255.255.254.0
+```
+
+The changing octet is the third octet. Its mask value is `254`, so its block size is:
+
+```text
+256 - 254 = 2
+```
+
+A `/23` therefore advances in steps of two in the third octet. For example, `192.168.0.0/23` covers `192.168.0.0` through `192.168.1.255`.
+
+## 8. Total Addresses and Usable Host Addresses
+
+The number of host bits determines the total number of addresses in a subnet:
+
+```text
+Total addresses = 2^(number of host bits)
+```
+
+For ordinary IPv4 LAN subnets, the network address and broadcast address are reserved, so the usual usable-host calculation is:
+
+```text
+Usable host addresses = total addresses - 2
+```
+
+Examples:
+
+| Prefix | Host bits | Total addresses | Usable host addresses |
+|---|---:|---:|---:|
+| `/24` | 8 | 256 | 254 |
+| `/25` | 7 | 128 | 126 |
+| `/26` | 6 | 64 | 62 |
+| `/27` | 5 | 32 | 30 |
+| `/28` | 4 | 16 | 14 |
+| `/29` | 3 | 8 | 6 |
+| `/30` | 2 | 4 | 2 |
+
+The first address in a conventional subnet is the network address. The last address is the broadcast address. The addresses between them are normally available for hosts.
+
+For example, in `192.168.1.128/25`:
+
+- Network address: `192.168.1.128`
+- First usable host: `192.168.1.129`
+- Last usable host: `192.168.1.254`
+- Broadcast address: `192.168.1.255`
+
+This subtract-two rule is the normal introductory rule for conventional LAN subnets. There are special cases, such as `/31` point-to-point links and `/32` host routes, where it does not apply in the same way.
+
+## 9. Determining Whether Two IP Addresses Are in the Same Network
+
+Two IPv4 addresses belong to the same subnet when their network portions are the same under the same subnet mask.
+
+Consider these two addresses:
+
+```text
+192.168.1.10/24
+192.168.1.200/24
+```
+
+With `/24`, the first 24 bits are the network portion. Both addresses belong to:
+
+```text
+192.168.1.0/24
+```
+
+They are in the same subnet.
+
+Now use `/25`:
+
+```text
+192.168.1.10/25
+192.168.1.200/25
+```
+
+The `/25` range is divided into two subnets:
+
+- `192.168.1.0/25` covers `.0` through `.127`.
+- `192.168.1.128/25` covers `.128` through `.255`.
+
+Therefore:
+
+- `192.168.1.10/25` belongs to `192.168.1.0/25`.
+- `192.168.1.200/25` belongs to `192.168.1.128/25`.
+
+They are in different subnets.
+
+The same two addresses under `/26` are also in different subnets:
+
+- `192.168.1.10/26` belongs to `192.168.1.0/26`.
+- `192.168.1.200/26` belongs to `192.168.1.192/26`.
+
+The IP addresses have not changed. The subnet mask has changed how the address space is divided into networks.
+
+## 10. A Simple Method for Reading a CIDR Address
+
+When you see an address such as `192.168.1.10/24`, work through these questions:
+
+1. **How many network bits are there?** The prefix `/24` means 24 network bits.
+2. **How many host bits remain?** `32 - 24 = 8` host bits.
+3. **What is the subnet mask?** `/24` is `255.255.255.0`.
+4. **How many total addresses are in the subnet?** `2^8 = 256`.
+5. **How many usable host addresses are there in a conventional LAN subnet?** `256 - 2 = 254`.
+6. **What is the network address and broadcast address?** For `192.168.1.10/24`, they are `192.168.1.0` and `192.168.1.255`.
+
+For a `/25` or `/26`, also identify the block size and determine which range contains the given address.
+
+## 11. The Key Ideas to Remember
+
+- IPv4 addresses contain 32 bits, arranged as four octets of eight bits each.
+- Each octet has 256 possible values, from `0` to `255`.
+- The CIDR prefix tells us how many leading bits are network bits.
+- `/24` means 24 network bits and 8 host bits; it does not mean 24 addresses.
+- A subnet mask uses `1` bits for the network portion and `0` bits for the host portion.
+- Adding one network bit leaves one fewer host bit.
+- Each extra network bit doubles the number of possible subnet combinations because a bit can be either `0` or `1`.
+- Each extra network bit halves the number of addresses in each equal-sized subnet.
+- The block size identifies the step between subnet network addresses.
+- The subnet mask determines how the same IPv4 address range is divided into networks.
+
+The central idea is simple: **a subnet prefix determines how many bits identify the network and how many bits are left for hosts. Changing that boundary changes the size and number of the networks.**
+
+* A practical IPv4 and IPv6 addressing for the CCNA: binary and masks, the block-size trick, real troubleshooting stuff, splitting networks, VLSM, wildcard masks, route summarization, IPv6 basics, Cisco IOS commands, and 65 practice problems with answers.
 * CIDR means Classless Inter-Domain Routing
-## Roadmap
+---
 
+## Roadmap
 - Lesson 1: Binary and masks
 - Lesson 2: Block-size trick
 - Lesson 3: Troubleshooting rules
-- Lesson 4: Equal subnets (borrowing bits)
+- Lesson 4 : Equal subnets (borrowing bits)
 - Lesson 5: Masks beyond the last octet
 - Lesson 6: VLSM (subnets of different sizes)
 - Lesson 7: Wildcard masks (ACLs, OSPF)
@@ -15,8 +440,6 @@ A practical IPv4 and IPv6 addressing for the CCNA: binary and masks, the block-s
 - Lesson 9: IPv6 addressing and subnetting
 - Practice problems 1 to 65 completed
 - to be able to find network, broadcast and range in under 30 seconds
-
-## Cheat Sheet
 
 ** Need to Memorize because everything else builds on it. :) **
 
