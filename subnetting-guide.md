@@ -47,7 +47,7 @@ An octet can represent values from `0` to `255`. There are 256 possible values b
 
 The range includes both endpoints: `0` through `255`.
 
-## 2. Network Portion and Host Portion
+## Network Portion and Host Portion
 
 An IPv4 address contains two logical parts:
 
@@ -75,7 +75,7 @@ This is not a valid subnet mask because the `1` bits are not continuous from the
 11111111.00001111.11111111.00000000
 ```
 
-## 3. Understanding CIDR Notation
+## CIDR Notation
 
 CIDR notation is the slash number written after an IPv4 address. For example:
 
@@ -83,18 +83,23 @@ CIDR notation is the slash number written after an IPv4 address. For example:
 192.168.1.10/24
 ```
 
-The `/24` means that the first **24 bits** are network bits. The remaining `8 bits` are host bits, because an IPv4 address always contains 32 bits.
+`/24` means that the first **24 bits** are network bits. The remaining `8 bits` are host bits, because an IPv4 address always contains 32 bits.
+first octets 11111111(8bits), second 11111111(16bits now), third 1111111(24bits now), 4th ocete become 00000000. cos it's 24 of 1s are in 24bits now, and rest are 0s. 
+Mask Value is, 255.255.255.0. 
+Block size calculation is always Mask Value - 256. so in this case, Block size is, 256-0 = 256. thats why it has 256 total addresses, 256-2 means 254 usable addresses, -2 means 2 addresses need to reserve for networking and broadcasting portion.
 
 ```text
 32 total bits - 24 network bits = 8 host bits
 ```
 
-The slash number does not mean that there are 24 addresses. It tells us how many leading bits of the subnet mask are set to `1`.
+The slash (/) number does not mean that there are 24 addresses. It tells how many leading bits of the subnet mask are set to `1`.
 
-The same rule applies to other prefixes:
+The same rule applies to other prefixes as well. 
 
-- `/25` means 25 network bits and 7 host bits.
+- `/25` means 25 network bits and 7 host bits. 
+first octets 11111111(8bits), second 11111111(16bits now), third 1111111(24bits now), 4th ocete become 10000000(25bits now). cos it's 25 of 1s are in 25 bits now, and rest are 0s. 
 - `/26` means 26 network bits and 6 host bits.
+first octets 11111111(8bits), second 11111111(16bits now), third 1111111(24bits now), 4th ocete become 11000000(26bits now). cos it's 26 of 1s are in 26 bits now, and rest are 0s. 
 - `/27` means 27 network bits and 5 host bits.
 
 Every time the prefix number increases by one, one more bit becomes part of the network portion and one fewer bit remains for host addresses.
