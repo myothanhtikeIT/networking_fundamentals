@@ -82,25 +82,34 @@ CIDR notation is the slash number written after an IPv4 address. For example:
 ```text
 192.168.1.10/24
 ```
-
+**an octet goes from 0 to 255 only**
 `/24` means that the first **24 bits** are network bits. The remaining `8 bits` are host bits, because an IPv4 address always contains 32 bits.
-first octets 11111111(8bits), second 11111111(16bits now), third 1111111(24bits now), 4th ocete become 00000000. cos it's 24 of 1s are in 24bits now, and rest are 0s. 
+first octets 11111111(8bits), second 11111111(16bits now), third 11111111(24bits now), 4th ocete become 00000000. cos it's 24 of 1s are in 24bits now, and rest are 0s. 
 Mask Value is, 255.255.255.0. 
-Block size calculation is always Mask Value - 256. so in this case, Block size is, 256-0 = 256. thats why it has 256 total addresses, 256-2 means 254 usable addresses, -2 means 2 addresses need to reserve for networking and broadcasting portion.
+(128 => 64 => 32 => 16 => 8 => 4 => 2 => 1) 
+Block size calculation is always 256 - Mask Value. so in this case, Block size is, 256-0 = 256. thats why it has 256 total addresses, 256-2 means 254 usable addresses, -2 means 2 addresses need to reserve for networking and broadcasting portion.
 
 ```text
 32 total bits - 24 network bits = 8 host bits
 ```
 
 The slash (/) number does not mean that there are 24 addresses. It tells how many leading bits of the subnet mask are set to `1`.
-
-The same rule applies to other prefixes as well. 
+The same rule applies to other prefixes. 
 
 - `/25` means 25 network bits and 7 host bits. 
-first octets 11111111(8bits), second 11111111(16bits now), third 1111111(24bits now), 4th ocete become 10000000(25bits now). cos it's 25 of 1s are in 25 bits now, and rest are 0s. 
+first octets 11111111(8bits), second 11111111(16bits now), third 1111111(24bits now), 4th ocete become 10000000(25bits now). cos it's 25 of 1s are in 25 bits now, and rest are 0s. there is 1 in 4th octet now. which means. 
+Mask value is now, 255.255.255.128 (cos there is 1 in 4th octet, 10000000)
+(128 => 64 => 32 => 16 => 8 => 4 => 2 => 1) 
+
 - `/26` means 26 network bits and 6 host bits.
-first octets 11111111(8bits), second 11111111(16bits now), third 1111111(24bits now), 4th ocete become 11000000(26bits now). cos it's 26 of 1s are in 26 bits now, and rest are 0s. 
+first octets 11111111(8bits), second 11111111(16bits now), third 1111111(24bits now), 4th ocete become 11000000(26bits now). cos it's 26 of 1s are in 26 bits now, and rest are 0s. there are now 2x 1s in the address. thats' why Mask Value is now, 255.255.255.192
+(128 => 64 => 32 => 16 => 8 => 4 => 2 => 1), 128 plus 64 is 192. 
+Block size become,  256 - Mask Value 192 = 64. Which means, an address 0-63 in 1 network and 64-127 is in another network. 
+
 - `/27` means 27 network bits and 5 host bits.
+first octets 11111111(8bits), second 11111111(16bits now), third 1111111(24bits now), 4th ocete become 11100000(27bits now). cos it's 27 of 1s are in 27 bits now, and rest are 0s. there are now 3x 1s in the address. thats' why Mask Value is now, 255.255.255.224
+(128 => 64 => 32 => 16 => 8 => 4 => 2 => 1), 128 plus 64 plus 32 is 224. 
+Block size now become, 256 - Mask Value 224 = 32. Which means, an address 0-31 in 1 network and 32-63 is in another network. and so on. 
 
 Every time the prefix number increases by one, one more bit becomes part of the network portion and one fewer bit remains for host addresses.
 
