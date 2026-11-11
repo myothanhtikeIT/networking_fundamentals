@@ -80,8 +80,9 @@ CIDR notation is the slash number written after an IPv4 address. For example:
 192.168.1.10/24
 ```
 **an octet goes from 0 to 255 only**
-`/24` means that the first **24 bits** are network bits. The remaining `8 bits` are host bits, because an IPv4 address always contains 32 bits.
-first octets 11111111(8bits), second 11111111(16bits now), third 11111111 (24bits now), 4th ocete become 00000000. cos it's 24 of 1s are in 24bits now, and rest are 0s. 
+- `/24` means that the first **24 bits** are network bits. The remaining `8 bits` are host bits, because an IPv4 address always contains 32 bits.
+
+- first octets 11111111(8bits), second 11111111(16bits now), third 11111111 (24bits now), 4th ocete become 00000000. cos it's 24 of 1s are in 24bits now, and rest are 0s. 
 Mask Value is, 255.255.255.0. 
 (128 => 64 => 32 => 16 => 8 => 4 => 2 => 1) 
 Block size calculation is always 256 - Mask Value. so in this case, Block size is, 256-0 = 256. thats why it has 256 total addresses, 256-2 means 254 usable addresses, -2 means 2 addresses need to reserve for networking and broadcasting portion.
