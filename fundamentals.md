@@ -7,8 +7,7 @@ Network:   192.168.10.0
 Usable:    .1 - .62
 Broadcast: .63
 ```
-> And understand why, not just calculate it.
-also understand:
+
 - CIDR 
 - private vs public IPv4
 - default gateway
@@ -29,7 +28,7 @@ also understand:
 
 ---
 ## Ethernet and switching
-> need to really understand: PC → Switch → Router → Internet
+> PC => Switch => Router => Internet
 specifically:
 
 - MAC addresses
@@ -67,11 +66,7 @@ Switching Table / MAC Table -  A switch's table mapping MAC addresses to switch 
 > 802.1Q Tagging - Adds a VLAN tag to an Ethernet frame so switches know which VLAN the frame belongs to.
 ---
 ## Routing
-You should understand:
-
-"I have this destination IP. How does the router decide where to send it?"
-
-That means:
+How does the router decide where to send a IP address?
 
 - routing table
 - connected routes
@@ -107,15 +102,6 @@ Traffic to 10.10.10.50 uses /24.
 
 > OSPF Fundamentals - Open Shortest Path First. A link-state dynamic routing protocol that calculates paths using network topology and cost.
 
-For example:
-```
-10.20.10.0/24
-       ↓
-      VyOS
-    ↙       ↘
-VLAN 10    VLAN 20
-```
-You should be able to explain exactly what happens when 10.20.10.50 talks to 10.20.20.60.
 ---
 ## TCP/IP properly
 
@@ -127,7 +113,6 @@ IP
     ↓
 Ethernet / Wi-Fi
 
-And know:
 IP
 Where is it going?
 TCP
@@ -156,7 +141,7 @@ TCP / UDP Ports
 ```
 Numbers used to identify applications or services.
 
-Examples:
+examples:
 
 TCP 22   SSH
 TCP 80   HTTP
@@ -198,29 +183,12 @@ Common Ports
 > Encapsulation: Each network layer adds its own header to data before transmission.
 > Decapsulation: The receiving system removes those headers as data moves up the stack.
 
-Application data
-↓
-TCP/UDP
-↓
-IP
-↓
-Ethernet
+Application data => TCP/UDP =>IP =>Ethernet
 ---
 ## DNS
 > make the process automatic:
-chatgpt.com
-        ↓
-DNS lookup
-        ↓
-IP address
-        ↓
-TCP or QUIC/UDP connection
-        ↓
-HTTPS
-        ↓
-Internet
+yahoo.com => DNS lookup => IP address =>TCP or QUIC/UDP connection => HTTPS =>Internet
 
-Understand:
 - A records
 - AAAA records
 - CNAME
@@ -245,14 +213,12 @@ Understand:
 > You may still have network connectivity, but if DNS cannot resolve names, users cannot easily turn names like google.com into IP addresses.
 ---
 ## DHCP
-Know the famous:
-
 #### DORA
 - Discover
 - Offer
 - Request
 - Acknowledge
-> and understand what DHCP actually gives a host:
+> what DHCP actually gives to a host devices/PCs:
 - IP address
 - Subnet mask
 - Default gateway

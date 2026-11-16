@@ -1,8 +1,8 @@
 # DHCP Fundamentals
 >DHCP basics :) 
-## What Is DHCP?
+## What is DHCP?
 
-**DHCP (Dynamic Host Configuration Protocol)** automatically provides network configuration to clients.
+**DHCP is short for (Dynamic Host Configuration Protocol)**
 
 > DHCP gives computers IP addresses.
 > **DHCP automatically provides clients with the network configuration they need to communicate on a network.**
