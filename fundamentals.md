@@ -29,8 +29,6 @@ Broadcast: .63
 ---
 ## Ethernet and switching
 > PC => Switch => Router => Internet
-specifically:
-
 - MAC addresses
 - ARP
 - Ethernet frames
@@ -66,6 +64,7 @@ Switching Table / MAC Table -  A switch's table mapping MAC addresses to switch 
 > 802.1Q Tagging - Adds a VLAN tag to an Ethernet frame so switches know which VLAN the frame belongs to.
 ---
 ## Routing
+> DEF: At its core, routing is the process of moving IP packets from one network to another.
 How does the router decide where to send a IP address?
 
 - routing table
@@ -79,15 +78,10 @@ How does the router decide where to send a IP address?
 - OSPF fundamentals
 
 > Routing Table - A router's list of known destination networks and how to reach them.
-
 > Connected Route - A route automatically created when a router interface is configured with an IP address and is up.
-
 > Static Route - A route manually configured by an administrator.
-
 > Default Route - The route used when no more specific route exists. Usually written as 0.0.0.0/0.
-
 > Next Hop - The next router or device to which a packet should be forwarded.
-
 > Longest-Prefix Match - The router chooses the most specific matching route.
 ```
 Example:
@@ -97,10 +91,9 @@ Example:
 Traffic to 10.10.10.50 uses /24.
 ```
 > Inter-VLAN Routing - Routing traffic between different VLANs because different VLANs are separate Layer 2 networks.
-
 > Dynamic Routing - Routers automatically learn and exchange routes using routing protocols.
-
 > OSPF Fundamentals - Open Shortest Path First. A link-state dynamic routing protocol that calculates paths using network topology and cost.
+
 
 ---
 ## TCP/IP properly
@@ -227,15 +220,10 @@ yahoo.com => DNS lookup => IP address =>TCP or QUIC/UDP connection => HTTPS =>In
 
 ---
 ## NAT - network address translation
-make sure this is solid:
+
 **Private IP**
-192.168.10.50
-        ↓ NAT
-Public IP
-203.x.x.x
-
-Understand:
-
+192.168.10.50 => NAT =>Public IP => 203.x.x.x
+> there are 
 - SNAT
 - DNAT
 - PAT
@@ -254,7 +242,7 @@ Understand:
 > Private addresses are reserved for internal networks and are not globally routable. NAT is commonly used to translate them to public addresses for Internet access.
 ---
 ## Network security fundamentals
-> you should understand:
+
 - ACLs
 - firewall rules
 - stateful vs stateless filtering
@@ -265,9 +253,8 @@ Understand:
 - authentication/authorization/accounting
 - segmentation
 - VPN concepts
-And importantly:
-> A VLAN is not automatically a security boundary by itself.
 
+> A VLAN is not automatically a security boundary by itself.
 > ACLs - Access Control Lists. Rules that allow or deny traffic based on things such as IP addresses and protocols.
 
 > Firewall Rules - Rules that control which network connections are permitted or blocked.
@@ -295,7 +282,6 @@ And importantly:
 > VPN Concepts - A Virtual Private Network creates an encrypted tunnel across an untrusted network, commonly the Internet.
 ---
 ## Wireless
-Understand:
 
 - SSID
 - AP
@@ -327,32 +313,12 @@ Understand:
 > Controller / Cloud-Managed AP - A system that centrally manages multiple APs, including configuration, monitoring, firmware, and wireless policies.
 ---
 ## Troubleshooting methodology
-Don't just memorize commands.
-Learn to think:
 > Where exactly does communication break?
 ```
-PC
- ↓
-NIC?
- ↓
-Ethernet?
- ↓
-Switch?
- ↓
-VLAN?
- ↓
-Gateway?
- ↓
-Routing?
- ↓
-NAT?
- ↓
-DNS?
- ↓
-Internet?
+PC => NIC? => Ethernet? =>Switch? => VLAN? => Gateway? => Routing?
+=> NAT? =>DNS? => Internet?
 ```
-Then use tools to prove each layer:
-
+tools to prove each layer:
 ```
 Linux           Windows
 ip addr         ipconfig                 
@@ -366,9 +332,6 @@ ss              Test-NetConnection
 tcpdump
 nmap
 ```
-## there's one final thing
-brain should be able to narrate the entire fucking journey:
-"Windows needs DNS first. DNS gets the destination IP. The workstation checks whether the destination is local. It isn't, so it sends the Ethernet frame to its default gateway. The switch forwards it through the correct VLAN. VyOS receives it, checks its routing table, performs NAT, forwards it toward the ISP, and the return traffic comes back through the NAT state back to the workstation."
 ---
 ## OSI model 
 ```
