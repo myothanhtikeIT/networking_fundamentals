@@ -65,7 +65,7 @@ Switching Table / MAC Table -  A switch's table mapping MAC addresses to switch 
 ---
 ## Routing
 > DEF: At its core, routing is the process of moving IP packets from one network to another.
-How does the router decide where to send a IP address?
+> A switch primarily connects devices within a local network. A router connects different networks and figures out where packets need to go.
 
 - routing table
 - connected routes
